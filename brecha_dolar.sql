@@ -630,6 +630,42 @@ GRANT SELECT, INSERT, UPDATE ON brecha_dolar.* TO 'guest2'@'localhost';
 SELECT * FROM mysql.user WHERE user LIKE '%guest%';
 
 
+-- Sentencias TCL
+
+SET @@autocommit = 0;
+SET  @@FOREIGN_KEY_CHECKS = 0;
+SET SQL_SAFE_UPDATES = 0;
+
+START TRANSACTION;
+DELETE FROM cotizaciones WHERE id_tipo  = 5;
+
+ROLLBACK;
+-- COMMIT;
+
+SELECT * FROM cotizaciones;
+
+START TRANSACTION;
+INSERT INTO brecha_ah_b (fechaHora, id_tipo, brecha_ah_b_porcentaje, brecha_ah_b_pesos)
+VALUES
+    ('2023-11-21 17:00:00', 1, 55.00, 6500.00),
+    ('2023-11-21 17:00:00', 2, 55.00, 6500.00),
+    ('2023-11-21 17:00:00', 3, 55.00, 6500.00),
+    ('2023-11-21 17:00:00', 4, 55.00, 6500.00);
+    SAVEPOINT sp1;
+INSERT INTO brecha_ah_b (fechaHora, id_tipo, brecha_ah_b_porcentaje, brecha_ah_b_pesos)
+VALUES
+    ('2023-11-21 17:00:00', 5, 55.00, 6500.00),
+    ('2023-11-21 17:05:00', 1, 55.50, 6600.00),
+    ('2023-11-21 17:05:00', 2, 55.50, 6600.00),
+    ('2023-11-21 17:05:00', 3, 55.50, 6600.00);
+    SAVEPOINT sp2;
+-- RELEASE SAVEPOINT sp1;
+
+ROLLBACK;
+COMMIT;
+
+SET  @@FOREIGN_KEY_CHECKS = 1;
+SET SQL_SAFE_UPDATES = 1;
 
 
 
